@@ -139,7 +139,9 @@ const pages = createPages(
           return new Response('hello world!');
         },
         POST: async (req) => {
-          const name = await req.text();
+          console.log('Getting request?!');
+          let name = 'world';
+          // const name = await req.text();
           return new Response(`hello ${name}!`);
         },
       },

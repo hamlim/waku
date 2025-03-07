@@ -33,6 +33,7 @@ export const serverEngine = (options: MiddlewareOptions): MiddlewareHandler => {
         url: new URL(c.req.url),
         method: c.req.method,
         headers: c.req.header(),
+        raw: c.req.raw,
       },
       res: {},
       context: {

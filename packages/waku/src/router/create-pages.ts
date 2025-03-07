@@ -707,14 +707,28 @@ export const createPages = <
       }
       const { handlers } = apiPathMap.get(routePath)!;
 
-      const req = new Request(
-        new URL(
-          path,
-          // TODO consider if we should apply `Forwarded` header here
-          'http://localhost',
-        ),
-        options,
-      );
+      console.log('Handling API request:', path, options);
+      console.log('typeof options:', typeof options);
+      console.log('options instanceof Request:', options instanceof Request);
+
+      
+      let req: Request | undefined;
+      try {
+        req = new Request(
+          new URL(
+            path,
+            // TODO consider if we should apply `Forwarded` header here
+            'http://localhost',
+          ),
+          options,
+        );
+
+      } catch (err) {
+        console.error('Error handling API request:');
+        console.error(err);
+        throw err;
+      }
+      console.log('Request:', req);
       const handler = handlers[options.method as Method];
       if (!handler) {
         throw new Error(

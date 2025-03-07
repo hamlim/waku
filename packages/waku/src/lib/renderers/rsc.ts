@@ -198,7 +198,12 @@ export async function decodePostAction(
       typeof contentType === 'string' &&
       contentType.startsWith('multipart/form-data')
     ) {
-      const bodyBuf = await streamToArrayBuffer(ctx.req.body);
+      console.log('ctx.req.body:', ctx.req.body);
+      console.log('About to read the body!!!');
+      // clone the body, and read from the clone
+      const clonedReq = ctx.req.raw.clone();
+      let clonedBody = clonedReq.body?.tee();
+      const bodyBuf = await streamToArrayBuffer(clonedBody?.[0]!);
       // XXX This doesn't support streaming unlike busboy
       const formData = await parseFormData(bodyBuf, contentType);
       const serverBundlerConfig = new Proxy(
